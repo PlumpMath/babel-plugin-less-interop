@@ -1,0 +1,47 @@
+{
+  "name": "babel-plugin-less-interop",
+  "version": "0.0.0",
+  "description": "Replace LESS variable references in JS code with the actual values.",
+  "main": "dist/index.js",
+  "dependencies": {
+    "less": "~2.5.3",
+    "less-interop": "^0.0.1",
+    "lodash.isstring": "^3.0.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.1.2",
+    "babel-core": "^6.1.2",
+    "babel-preset-es2015": "^6.1.2",
+    "bootstrap": "^3.3.5",
+    "istanbul": "^0.4.0",
+    "mocha": "^2.3.3"
+  },
+  "scripts": {
+    "coveralls": "npm test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "dist": "./node_modules/babel-cli/bin/babel.js src/ --out-dir dist/",
+    "test": "npm run dist && ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "author": "YJ Yang <chcokr@gmail.com>",
+  "license": "MIT",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chcokr/babel-plugin-less-interop.git"
+  },
+  "keywords": [
+    "babel-plugin",
+    "less",
+    "interop"
+  ],
+  "bugs": {
+    "url": "https://github.com/chcokr/babel-plugin-less-interop/issues"
+  },
+  "homepage": "https://github.com/chcokr/babel-plugin-less-interop#readme"
+}
