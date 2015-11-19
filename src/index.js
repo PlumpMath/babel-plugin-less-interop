@@ -1,5 +1,6 @@
 import fs from 'fs';
 import importLessVars from 'less-interop';
+import create from 'lodash.create';
 import isString from 'lodash.isstring';
 import less from 'less';
 import path from 'path';
@@ -15,9 +16,9 @@ export default function ({ types: t }) {
           state.opts.lessFile,
           {encoding: 'utf8'});
 
-        const parseOptions = {
+        let parseOptions = create(state.opts.lessParseOptions || {}, {
           processImports: false // This makes `less.parse` synchronous.
-        };
+        });
 
         less.parse(lessSource, parseOptions, (err, tree) => {
           if (err) {
