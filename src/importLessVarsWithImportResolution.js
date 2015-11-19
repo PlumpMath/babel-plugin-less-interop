@@ -12,7 +12,12 @@ module.exports = function importLessVarsWithImportResolution(fileAbsPath) {
 
   const lessSource = fs.readFileSync(fileAbsPath, 'utf8');
 
-  less.parse(lessSource, {processImports: false}, (err, tree) => {
+  const parseOptions = {
+    filename: fileAbsPath,
+    processImports: false // This makes `less.parse` synchronous.
+  };
+
+  less.parse(lessSource, parseOptions, (err, tree) => {
     if (err) {
       throw formatLessRenderError(err);
     }

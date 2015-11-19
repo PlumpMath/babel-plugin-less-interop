@@ -1,1 +1,1 @@
-Unrecognised input
+test/error-less-parse/index.less (line 2, column 2)
