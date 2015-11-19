@@ -5,6 +5,44 @@ import isString from 'lodash.isstring';
 import less from 'less';
 import path from 'path';
 
+const importLessVarsWithImportResolution = (fileAbsPath) => {
+
+  let lessVars;
+
+  const lessSource = fs.readFileSync(fileAbsPath, 'utf8');
+
+  less.parse(lessSource, {processImports: false}, (err, tree) => {
+    if (err) {
+      throw err; // TODO: What happened to this.errorWithNode?
+      // TODO: Format LESS errors
+    }
+
+    const importRules = // `@import` rules seem to have property `path`.
+      tree.rules.filter(r => r.path);
+
+    for (let rule of importRules) {
+      const curFileDir = path.dirname(fileAbsPath);
+      const importedFileAbsPath = path.join(curFileDir, rule.path.value);
+
+      const lessVarsFromImportedFile =
+        importLessVarsWithImportResolution(importedFileAbsPath);
+
+      lessVars = {
+        ...lessVars,
+        ...lessVarsFromImportedFile
+      };
+    }
+
+    lessVars = {
+      ...lessVars,
+      ...importLessVars(tree.rules)
+    };
+  });
+
+  return lessVars;
+
+};
+
 export default function ({ types: t }) {
   return {
     visitor: {
@@ -23,24 +61,12 @@ export default function ({ types: t }) {
           }
         }
 
-        let lessVars;
-
         const lessSource = fs.readFileSync(
           state.opts.lessFile,
           {encoding: 'utf8'});
 
-        let parseOptions = create(state.opts.lessParseOptions || {}, {
-          sync: true // This makes `less.parse` synchronous.
-        });
-
-        less.parse(lessSource, parseOptions, (err, tree) => {
-          if (err) {
-            throw err; // TODO: What happened to this.errorWithNode?
-            // TODO: Format LESS errors
-          }
-
-          lessVars = importLessVars(tree.rules);
-        });
+        const lessVars =
+          importLessVarsWithImportResolution(state.opts.lessFile);
 
         if (path.node.object.name === state.opts.memberExprObjName) {
           const propName = path.node.property.name;
