@@ -1,9 +1,9 @@
-import fs from 'fs';
-import importLessVars from 'less-interop';
-import create from 'lodash.create';
-import isString from 'lodash.isstring';
-import less from 'less';
-import path from 'path';
+const create = require('lodash.create');
+const fs = require('fs');
+const importLessVars = require('less-interop');
+const isString = require('lodash.isstring');
+const less = require('less');
+const path = require('path');
 
 const formatLessRenderError = (e) => {
   // Stolen from
