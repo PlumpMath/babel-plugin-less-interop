@@ -27,16 +27,10 @@ const importLessVarsWithImportResolution = (fileAbsPath) => {
       const lessVarsFromImportedFile =
         importLessVarsWithImportResolution(importedFileAbsPath);
 
-      lessVars = {
-        ...lessVars,
-        ...lessVarsFromImportedFile
-      };
+      lessVars = create(lessVars, lessVarsFromImportedFile);
     }
 
-    lessVars = {
-      ...lessVars,
-      ...importLessVars(tree.rules)
-    };
+    lessVars = create(lessVars, importLessVars(tree.rules));
   });
 
   return lessVars;
