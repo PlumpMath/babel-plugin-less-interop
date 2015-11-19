@@ -32,8 +32,7 @@ export default function ({ types: t }) {
           const lessValue = lessVars[propName];
 
           if (lessValue === undefined) {
-            // TODO: What happened to this.errorWithNode?
-            throw new Error(
+            throw path.buildCodeFrameError(
               `babel-plugin-less-interop: Property ${propName} cannot be` +
                 ` extracted from the given LESS file.`);
           }
