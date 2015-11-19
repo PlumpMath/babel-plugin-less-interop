@@ -19,7 +19,7 @@ export default function ({ types: t }) {
           if (state.opts[prop] === undefined) {
             throw new Error(
               `babel-plugin-less-interop: You have to provide option ${prop}` +
-                `in your plugin definition.`);
+                ` in your plugin definition.`);
           }
         }
 
