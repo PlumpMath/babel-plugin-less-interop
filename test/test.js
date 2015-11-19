@@ -37,6 +37,7 @@ describe('Passes', function () {
 
       var transpiledCode = babel.transform(beforeFileCode, {
         plugins: [
+          'syntax-jsx',
           ['../dist/index.js', {
             lessFile: path.join(__dirname, dir, 'index.less')
           }]
