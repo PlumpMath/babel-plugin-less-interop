@@ -37,7 +37,7 @@ const importLessVarsWithImportResolution = (fileAbsPath) => {
     const importRules = // `@import` rules seem to have property `path`.
       tree.rules.filter(r => r.path);
 
-    for (let rule of importRules) {
+    importRules.forEach(rule => {
       const curFileDir = path.dirname(fileAbsPath);
       const importedFileAbsPath = path.join(curFileDir, rule.path.value);
 
@@ -45,7 +45,7 @@ const importLessVarsWithImportResolution = (fileAbsPath) => {
         importLessVarsWithImportResolution(importedFileAbsPath);
 
       lessVars = create(lessVars, lessVarsFromImportedFile);
-    }
+    });
 
     lessVars = create(lessVars, importLessVars(tree.rules));
   });
@@ -64,13 +64,13 @@ export default function ({ types: t }) {
           'memberExprObjName'
         ];
 
-        for (let prop of requiredPropsInOpts) {
+        requiredPropsInOpts.forEach(prop => {
           if (state.opts[prop] === undefined) {
             throw new Error(
               `babel-plugin-less-interop: You have to provide option ${prop}` +
                 ` in your plugin definition.`);
           }
-        }
+        });
 
       },
       MemberExpression(path, state) {
