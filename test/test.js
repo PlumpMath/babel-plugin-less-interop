@@ -39,7 +39,8 @@ describe('Passes', function () {
         plugins: [
           'syntax-jsx',
           ['../dist/index.js', {
-            lessFile: path.join(__dirname, dir, 'index.less')
+            lessFile: path.join(__dirname, dir, 'index.less'),
+            memberExprObjName: 'LESS'
           }]
         ]
       }).code;
