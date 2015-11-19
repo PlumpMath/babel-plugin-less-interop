@@ -83,11 +83,6 @@ export default function ({ types: t }) {
 
             path.replaceWith(t.StringLiteral(lessValue));
 
-          } else {
-            // TODO: What happened to this.errorWithNode?
-            throw new Error(
-              `babel-plugin-less-interop: Unknown value type has been` +
-                ` returned by less-interop: ${lessValue}`);
           }
         }
 
