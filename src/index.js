@@ -10,6 +10,19 @@ export default function ({ types: t }) {
     visitor: {
       MemberExpression(path, state) {
 
+        const requiredPropsInOpts = [
+          'lessFile',
+          'memberExprObjName'
+        ];
+
+        for (let prop of requiredPropsInOpts) {
+          if (state.opts[prop] === undefined) {
+            throw new Error(
+              `babel-plugin-less-interop: You have to provide option ${prop}` +
+                `in your plugin definition.`);
+          }
+        }
+
         let lessVars;
 
         const lessSource = fs.readFileSync(
@@ -29,7 +42,7 @@ export default function ({ types: t }) {
           lessVars = importLessVars(tree.rules);
         });
 
-        if (path.node.object.name === 'LESS') {
+        if (path.node.object.name === state.opts.memberExprObjName) {
           const propName = path.node.property.name;
           const lessValue = lessVars[propName];
 
