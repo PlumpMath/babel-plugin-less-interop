@@ -42,7 +42,8 @@ export default function ({ types: t }) {
 
             path.replaceWith(t.NumericLiteral(lessValue));
 
-          } else if (isString(lessValue)) {
+          } else {
+            // less-interop will only return numbers or strings.
 
             path.replaceWith(t.StringLiteral(lessValue));
 
