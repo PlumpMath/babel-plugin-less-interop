@@ -46,7 +46,7 @@ const importLessVarsWithImportResolution = (fileAbsPath) => {
 export default function ({ types: t }) {
   return {
     visitor: {
-      MemberExpression(path, state) {
+      Program(path, state) {
 
         const requiredPropsInOpts = [
           'lessFile',
@@ -60,6 +60,9 @@ export default function ({ types: t }) {
                 ` in your plugin definition.`);
           }
         }
+
+      },
+      MemberExpression(path, state) {
 
         const lessVars =
           importLessVarsWithImportResolution(state.opts.lessFile);
