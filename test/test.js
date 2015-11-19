@@ -33,19 +33,39 @@ describe('Passes', function () {
 
       var afterFilePath = path.join(__dirname, dir, 'after.js');
       var beforeFilePath = path.join(__dirname, dir, 'before.js');
+      var errorFilePath = path.join(__dirname, dir, 'error.txt');
 
       var afterFileCode = fs.readFileSync(afterFilePath, {encoding: 'utf8'});
       var beforeFileCode = fs.readFileSync(beforeFilePath, {encoding: 'utf8'});
 
-      var transpiledCode = babel.transform(beforeFileCode, {
-        plugins: [
-          'syntax-jsx',
-          ['../dist/index.js', {
-            lessFile: path.join(__dirname, dir, 'index.less'),
-            memberExprObjName: 'LESS'
-          }]
-        ]
-      }).code;
+      var transpiledCode;
+
+      try {
+
+        transpiledCode = babel.transform(beforeFileCode, {
+          plugins: [
+            'syntax-jsx',
+            ['../dist/index.js', {
+              lessFile: path.join(__dirname, dir, 'index.less'),
+              memberExprObjName: 'LESS'
+            }]
+          ]
+        }).code;
+
+      } catch (err) {
+        try {
+          fs.openSync(errorFilePath, 'r');
+        } catch (openErr) {
+          if (!openErr || openErr.code !== 'ENOENT') {
+
+            var expectedErrorMsg = fs.readFileSync(errorFilePath, 'utf8');
+            assert(err.message.indexOf(expectedErrorMsg) !== -1);
+
+          }
+        }
+
+        return;
+      }
 
       assert.deepEqual(
         transpiledCode.replace(/\s/g, ''),
