@@ -61,10 +61,6 @@ export default function ({ types: t }) {
           }
         }
 
-        const lessSource = fs.readFileSync(
-          state.opts.lessFile,
-          {encoding: 'utf8'});
-
         const lessVars =
           importLessVarsWithImportResolution(state.opts.lessFile);
 
