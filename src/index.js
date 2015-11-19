@@ -30,7 +30,7 @@ export default function ({ types: t }) {
           {encoding: 'utf8'});
 
         let parseOptions = create(state.opts.lessParseOptions || {}, {
-          processImports: false // This makes `less.parse` synchronous.
+          sync: true // This makes `less.parse` synchronous.
         });
 
         less.parse(lessSource, parseOptions, (err, tree) => {
