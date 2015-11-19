@@ -55,12 +55,11 @@ describe('Passes', function () {
       } catch (err) {
         try {
           fs.openSync(errorFilePath, 'r');
+          var expectedErrorMsg = fs.readFileSync(errorFilePath, 'utf8');
+          assert(err.message.indexOf(expectedErrorMsg) !== -1);
         } catch (openErr) {
           if (!openErr || openErr.code !== 'ENOENT') {
-
-            var expectedErrorMsg = fs.readFileSync(errorFilePath, 'utf8');
-            assert(err.message.indexOf(expectedErrorMsg) !== -1);
-
+            throw openErr;
           }
         }
 
