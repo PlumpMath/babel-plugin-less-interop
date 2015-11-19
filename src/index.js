@@ -5,6 +5,24 @@ import isString from 'lodash.isstring';
 import less from 'less';
 import path from 'path';
 
+const formatLessRenderError = (e) => {
+  // Stolen from
+  // https://github.com/webpack/less-loader/blob/v2.2.1/index.js#L158
+
+  const extract = !e.extract ? '' :
+    '\n near lines:\n   ' + e.extract.join('\n   ');
+
+  const err = new Error(
+    e.message + '\n @ ' + e.filename +
+      ' (line ' + e.line + ', column ' + e.column + ')' +
+      extract
+  );
+
+  err.hideStack = true;
+
+  return err;
+};
+
 const importLessVarsWithImportResolution = (fileAbsPath) => {
 
   let lessVars;
@@ -13,8 +31,7 @@ const importLessVarsWithImportResolution = (fileAbsPath) => {
 
   less.parse(lessSource, {processImports: false}, (err, tree) => {
     if (err) {
-      throw err; // TODO: What happened to this.errorWithNode?
-      // TODO: Format LESS errors
+      throw formatLessRenderError(err);
     }
 
     const importRules = // `@import` rules seem to have property `path`.
