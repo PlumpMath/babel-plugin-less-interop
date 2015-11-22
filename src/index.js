@@ -1,8 +1,6 @@
 const importLessVarsWithImportResolution =
   require('./importLessVarsWithImportResolution');
 
-const isString = require('lodash.isstring');
-
 export default function ({ types: t }) {
   return {
     visitor: {
